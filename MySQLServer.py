@@ -5,24 +5,29 @@ from mysql.connector import Error
 
 def create_database():
     try:
-        # Connect to MySQL Server (change credentials as needed)
+        # Connect to MySQL Server (adjust credentials if necessary)
         connection = mysql.connector.connect(
             host='localhost',
             user='root',
-            password='2019'  # Replace with your actual password
+            password='2019'
         )
 
         if connection.is_connected():
-            cursor = connection.cursor()
-            cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
-            print("Database 'alx_book_store' created successfully!")
+            try:
+                cursor = connection.cursor()
+                cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
+                print("Database 'alx_book_store' created successfully!")
+            except Error as db_err:
+                print(f"Error executing SQL statement: {db_err}")
+            finally:
+                if 'cursor' in locals():
+                    cursor.close()
 
-    except Error as e:
-        print(f"Error connecting to MySQL or creating database: {e}")
+    except Error as conn_err:
+        print(f"Error connecting to MySQL server: {conn_err}")
 
     finally:
         if 'connection' in locals() and connection.is_connected():
-            cursor.close()
             connection.close()
 
 if __name__ == "__main__":
