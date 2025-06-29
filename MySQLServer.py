@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import mysql.connector
-from mysql.connector import Error
 import sys
 
 def create_database():
@@ -17,8 +16,8 @@ def create_database():
                 cursor = connection.cursor()
                 cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
                 print("Database 'alx_book_store' created successfully!")
-            except Error as db_err:
-                print(f"Failed to execute query: {db_err}")
+            except mysql.connector.Error as err:
+                print(f"Failed to execute query: {err}")
                 sys.exit(1)
             finally:
                 if 'cursor' in locals():
@@ -27,8 +26,8 @@ def create_database():
             print("Connection to MySQL server failed.")
             sys.exit(1)
 
-    except Error as conn_err:
-        print(f"Connection error: {conn_err}")
+    except mysql.connector.Error as err:
+        print(f"Connection error: {err}")
         sys.exit(1)
 
     finally:
